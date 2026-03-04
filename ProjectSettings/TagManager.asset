@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -43,6 +44,12 @@ TagManager:
     locked: 0
   - name: askar
     uniqueID: 3148472647
+    locked: 0
+  - name: Player
+    uniqueID: 3675863389
+    locked: 0
+  - name: tilemap
+    uniqueID: 2489736485
     locked: 0
   m_RenderingLayers:
   - Default
