@@ -51,5 +51,8 @@ TagManager:
   - name: tilemap
     uniqueID: 2489736485
     locked: 0
+  - name: Tilemap
+    uniqueID: 4232229407
+    locked: 0
   m_RenderingLayers:
   - Default

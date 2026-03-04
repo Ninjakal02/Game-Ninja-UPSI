@@ -289,9 +289,9 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1805230811
-  m_SortingLayer: 3
-  m_SortingOrder: 6
+  m_SortingLayerID: -62737889
+  m_SortingLayer: 4
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 10.175, y: 7.475, z: 0}
@@ -1186,7 +1186,6 @@ GameObject:
   - component: {fileID: 749316320}
   - component: {fileID: 749316319}
   - component: {fileID: 749316323}
-  - component: {fileID: 749316324}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1255,7 +1254,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 5
   m_Material: {fileID: 6200000, guid: a39e59c92e7223544b37a48ac08303dc, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1314,7 +1313,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -619103907
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 6
   m_MaskInteraction: 0
   m_Sprite: {fileID: -5265460896340674508, guid: d21536d0e3fc0664f85211b9817ad765, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1341,29 +1340,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &749316323
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 749316316}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4f6c06bd4843be44081f5972415930c8, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &749316324
+--- !u!114 &749316323
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1372,11 +1349,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 749316316}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c99ae43f12b50284b8a1981c3b0bfe3c, type: 3}
+  m_Script: {fileID: 11500000, guid: c4d27028d4080514db0fa6e94c430070, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player
+  m_EditorClassIdentifier: '::'
   speed: 5
-  jumpspeed: 5
+  jumpspeed: 10
 --- !u!1 &842725943
 GameObject:
   m_ObjectHideFlags: 0
@@ -2445,6 +2422,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   speed: 0
+  player: {fileID: 0}
+  isChasing: 0
 --- !u!1 &1498155190
 GameObject:
   m_ObjectHideFlags: 0
