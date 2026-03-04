@@ -1255,7 +1255,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: a39e59c92e7223544b37a48ac08303dc, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1374,10 +1374,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c99ae43f12b50284b8a1981c3b0bfe3c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  speed: 0
-  jumpspeed: 0
-  isGrounded: 0
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  speed: 5
+  jumpspeed: 5
 --- !u!1 &842725943
 GameObject:
   m_ObjectHideFlags: 0
