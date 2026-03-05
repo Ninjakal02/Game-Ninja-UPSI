@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
@@ -7,10 +8,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpspeed = 10f;
     private bool isGrounded;
+    private Animator anim;
+    private bool isDead = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -31,6 +35,18 @@ public class Player : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpspeed);
             isGrounded = false;
         }
+
+        anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
+        anim.SetBool("isGrounded", isGrounded);
+        if (Input.GetMouseButtonDown(0) && ! isDead)
+            {
+            anim.SetTrigger("Attack");
+            }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            isDead = true;
+            anim.SetBool("isDead", true);
+        }
     }
 
     // Detect landing on ground
@@ -40,13 +56,24 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
         }
+        
     }
+ 
+ 
 
     void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
+        }
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("DeadZone"))
+        {
+            anim.SetBool("isDead", true);
+            isDead = true;
         }
     }
 }
