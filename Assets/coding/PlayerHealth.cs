@@ -4,16 +4,20 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public int health = 100;
-    public float maxHealth = 100f;
+    public int maxHealth = 100;
 
     public Image hpBar;
     public Animator animator;
 
-    bool isDead = false;
+    private bool isDead = false;
+    private Player playerMovement;
 
     void Start()
     {
+        health = maxHealth;
         UpdateHPBar();
+
+        playerMovement = GetComponent<Player>();
     }
 
     public void TakeDamage(int damage)
@@ -22,11 +26,14 @@ public class PlayerHealth : MonoBehaviour
 
         health -= damage;
 
+        if (health < 0)
+            health = 0;
+
         UpdateHPBar();
 
         Debug.Log("Player kena damage! Health: " + health);
 
-        if (health <= 0)
+        if (health == 0)
         {
             Die();
         }
@@ -34,7 +41,8 @@ public class PlayerHealth : MonoBehaviour
 
     void UpdateHPBar()
     {
-        hpBar.fillAmount = (float)health / maxHealth;
+        if (hpBar != null)
+            hpBar.fillAmount = (float)health / maxHealth;
     }
 
     void Die()
@@ -45,6 +53,11 @@ public class PlayerHealth : MonoBehaviour
 
         Debug.Log("Player mati");
 
-        animator.SetBool("isDead", true);
+        if (animator != null)
+            animator.SetBool("isDead", true);
+
+        // Stop movement script sahaja
+        if (playerMovement != null)
+            playerMovement.enabled = false;
     }
 }
