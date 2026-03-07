@@ -7,6 +7,9 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth = 100f;
 
     public Image hpBar;
+    public Animator animator;
+
+    bool isDead = false;
 
     void Start()
     {
@@ -15,20 +18,33 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        if (isDead) return;
 
-        Debug.Log("Player kena damage! Health: " + health);
+        health -= damage;
 
         UpdateHPBar();
 
+        Debug.Log("Player kena damage! Health: " + health);
+
         if (health <= 0)
         {
-            Debug.Log("Player mati");
+            Die();
         }
     }
 
     void UpdateHPBar()
     {
-        hpBar.fillAmount = health / maxHealth;
+        hpBar.fillAmount = (float)health / maxHealth;
+    }
+
+    void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+
+        Debug.Log("Player mati");
+
+        animator.SetBool("isDead", true);
     }
 }

@@ -1593,6 +1593,7 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   hpBar: {fileID: 845349600}
+  animator: {fileID: 749316324}
 --- !u!1 &752979972
 GameObject:
   m_ObjectHideFlags: 0
