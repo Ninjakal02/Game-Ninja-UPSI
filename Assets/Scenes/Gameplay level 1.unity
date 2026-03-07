@@ -1429,7 +1429,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.02626872, y: 0.6029887}
+  m_Offset: {x: 0.02626872, y: 0.96590906}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1439,7 +1439,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.2551517, y: 2.6830602}
+  m_Size: {x: 2.2551517, y: 1.9572195}
   m_EdgeRadius: 0
 --- !u!50 &749316320
 Rigidbody2D:
@@ -1905,7 +1905,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 1.4200971, y: -0.39883608}
+  m_Offset: {x: 1.4200971, y: -0.7459079}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1915,7 +1915,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.1481628, y: 2.4503117}
+  m_Size: {x: 2.1481628, y: 1.7561681}
   m_EdgeRadius: 0
 --- !u!114 &901767106
 MonoBehaviour:
@@ -2375,7 +2375,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1.1078199}
+  m_Offset: {x: 0, y: 1.3202153}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2385,7 +2385,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.15625, y: 4.97186}
+  m_Size: {x: 3.15625, y: 4.5470695}
   m_EdgeRadius: 0
 --- !u!212 &1138474571
 SpriteRenderer:
@@ -4669,7 +4669,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 1.4200971, y: -0.39883608}
+  m_Offset: {x: 1.4200971, y: -0.75397944}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4679,7 +4679,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.1481628, y: 2.4503117}
+  m_Size: {x: 2.1481628, y: 1.740025}
   m_EdgeRadius: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
