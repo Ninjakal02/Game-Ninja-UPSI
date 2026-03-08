@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class PlayerThrow : MonoBehaviour
 {
-    public GameObject shurikenPrefab;
-    public Transform throwPoint;
+    public GameObject ShirukenPrefab;
+    public Transform ThrowPoint;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            ThrowShuriken();
+            ThrowShiruken();
         }
     }
 
-    void ThrowShuriken()
+    void ThrowShiruken()
     {
-        Instantiate(shurikenPrefab, throwPoint.position, transform.rotation);
+        Instantiate(ShirukenPrefab, ThrowPoint.position, transform.rotation);
     }
 }
