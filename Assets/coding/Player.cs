@@ -1,20 +1,30 @@
 using UnityEngine;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
+    private SpriteRenderer sr;
 
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpspeed = 10f;
 
+    [SerializeField] private GameObject shurikenPrefab;
+    [SerializeField] private Transform throwPoint;
+
     private bool isGrounded;
     private bool isDead = false;
+
+    // Shuriken limit
+    public int maxShurikens = 3;
+    private int shurikenCount = 0;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -24,11 +34,11 @@ public class Player : MonoBehaviour
         // Move character
         rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
 
-        // Flip character
+        // Flip character menggunakan flipX
         if (horizontalInput > 0.01f)
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            sr.flipX = false;  // kanan
         else if (horizontalInput < -0.01f)
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            sr.flipX = true;   // kiri
 
         // Jump
         if (Input.GetKey(KeyCode.Space) && isGrounded)
@@ -38,7 +48,7 @@ public class Player : MonoBehaviour
         }
 
         // Throw shuriken animation
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && !isDead && shurikenCount < maxShurikens)
         {
             anim.SetTrigger("throw");
         }
@@ -67,5 +77,29 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
         }
+    }
+
+    // Spawn shuriken (dipanggil dari animation event "ThrowShuriken")
+    public void ThrowShuriken()
+    {
+        if (shurikenCount >= maxShurikens) return; // limit shuriken
+
+        GameObject shuriken = Instantiate(shurikenPrefab, throwPoint.position, Quaternion.identity);
+
+        // Direction ikut flipX
+        float direction = sr.flipX ? -1f : 1f;
+        shuriken.GetComponent<Shuriken>().SetDirection(direction);
+
+        shurikenCount++;
+        float destroyTime = shuriken.GetComponent<Shuriken>().destroyTime;
+        Destroy(shuriken, destroyTime);
+
+        StartCoroutine(ResetShurikenCount(destroyTime));
+    }
+
+    IEnumerator ResetShurikenCount(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        shurikenCount--;
     }
 }
