@@ -39,6 +39,17 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void Heal(int amount)
+    {
+        health += amount;
+
+        if (health > maxHealth)
+            health = maxHealth;
+
+        UpdateHPBar();
+
+        Debug.Log("Player heal: " + health);
+    }
     void UpdateHPBar()
     {
         if (hpBar != null)
