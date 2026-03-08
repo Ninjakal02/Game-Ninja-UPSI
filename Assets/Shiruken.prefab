@@ -134,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shuriken
   speed: 10
+  rotateSpeed: 500
   destroyTime: 3
 --- !u!58 &7592009495772925570
 CircleCollider2D:
