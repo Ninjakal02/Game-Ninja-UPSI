@@ -1,14 +1,14 @@
 using UnityEngine;
 
-
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator anim;
 
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpspeed = 10f;
+
     private bool isGrounded;
-    private Animator anim;
     private bool isDead = false;
 
     void Start()
@@ -21,14 +21,15 @@ public class Player : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        // Move character left/right
+        // Move character
         rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
 
-        // Flip sprite based on direction
+        // Flip character
         if (horizontalInput > 0.01f)
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         else if (horizontalInput < -0.01f)
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+
         // Jump
         if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
@@ -36,44 +37,35 @@ public class Player : MonoBehaviour
             isGrounded = false;
         }
 
-        anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
-        anim.SetBool("isGrounded", isGrounded);
-        if (Input.GetMouseButtonDown(0) && ! isDead)
-            {
+        // Throw shuriken animation
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            anim.SetTrigger("throw");
+        }
+
+        // Attack animation
+        if (Input.GetMouseButtonDown(0) && !isDead)
+        {
             anim.SetTrigger("Attack");
-            }
+        }
+
+        // Test death
         if (Input.GetKeyDown(KeyCode.K))
         {
             isDead = true;
             anim.SetBool("isDead", true);
         }
+
+        // Animator parameters
+        anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
+        anim.SetBool("isGrounded", isGrounded);
     }
 
-    // Detect landing on ground
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-        }
-        
-    }
- 
- 
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
-    }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("DeadZone"))
-        {
-            anim.SetBool("isDead", true);
-            isDead = true;
         }
     }
 }
