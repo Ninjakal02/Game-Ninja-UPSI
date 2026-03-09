@@ -15,23 +15,27 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject shirukenPrefab;
     [SerializeField] private Transform throwPoint;
 
-    [Header("Shiruken Limit")]
+    [Header("Shiruken Limit & UI")]
     public int maxShirukens = 10;
     private int shirukenCount = 0;
-
-    [Header("Shiruken UI Icons")]
     [SerializeField] private Image[] shirukenIcons;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip attackClip;      // Player attack
+    [SerializeField] private AudioClip throwClip;       // Player throw Shiruken
+    private AudioSource audioSource;
 
     private bool isGrounded;
     private bool isDead = false;
 
-    private int facingDirection = 1;
+    private int facingDirection = 1; // 1 = kanan, -1 = kiri
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
 
         ResetShirukenIcons();
     }
@@ -42,9 +46,7 @@ public class Player : MonoBehaviour
 
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        // ======================
-        // MOVEMENT
-        // ======================
+        // ===== MOVEMENT =====
         rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
 
         if (horizontalInput > 0.01f)
@@ -58,26 +60,29 @@ public class Player : MonoBehaviour
             facingDirection = -1;
         }
 
-        // ======================
-        // JUMP
-        // ======================
+        // ===== JUMP =====
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpSpeed);
             isGrounded = false;
         }
 
-        // ======================
-        // THROW SHIRUKEN
-        // ======================
+        // ===== PLAYER ATTACK =====
+        if (Input.GetMouseButtonDown(0)) // left click
+        {
+            anim.SetTrigger("Attack");
+
+            if (attackClip != null && audioSource != null)
+                audioSource.PlayOneShot(attackClip);
+        }
+
+        // ===== THROW SHIRUKEN (Right Click) =====
         if (Input.GetMouseButtonDown(1))
         {
             ThrowShiruken();
         }
 
-        // ======================
-        // ANIMATION
-        // ======================
+        // ===== ANIMATION =====
         anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);
     }
@@ -85,15 +90,10 @@ public class Player : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-        {
             isGrounded = true;
-        }
     }
 
-    // ======================
-    // SHIRUKEN SYSTEM
-    // ======================
-
+    // ===== SHIRUKEN SYSTEM =====
     void ThrowShiruken()
     {
         if (shirukenCount >= maxShirukens)
@@ -102,39 +102,31 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // Play throw animation
+        // Play throw animation & sound
         anim.SetTrigger("Throw");
+        if (throwClip != null && audioSource != null)
+            audioSource.PlayOneShot(throwClip);
 
-        GameObject shiruken = Instantiate(
-            shirukenPrefab,
-            throwPoint.position,
-            Quaternion.identity
-        );
-
+        GameObject shiruken = Instantiate(shirukenPrefab, throwPoint.position, Quaternion.identity);
         shiruken.GetComponent<Shiruken>().SetDirection(facingDirection);
 
-        // Hide UI icon
+        // Update UI
         if (shirukenCount < shirukenIcons.Length)
-        {
             shirukenIcons[shirukenCount].enabled = false;
-        }
 
         shirukenCount++;
     }
 
-    void ResetShirukenIcons()
+    public void ResetShirukenIcons()
     {
         for (int i = 0; i < shirukenIcons.Length; i++)
-        {
             shirukenIcons[i].enabled = true;
-        }
+
+        shirukenCount = 0;
     }
 
-    // ======================
-    // PLAYER DEATH
-    // ======================
-
-    void Die()
+    // ===== PLAYER DEATH =====
+    public void Die()
     {
         isDead = true;
         anim.SetBool("isDead", true);
