@@ -1,79 +1,118 @@
 using UnityEngine;
-
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
-
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float jumpspeed = 10f;
-    private bool isGrounded;
     private Animator anim;
+    private SpriteRenderer sr;
+
+    [Header("Movement")]
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float jumpSpeed = 10f;
+
+    [Header("Shuriken")]
+    [SerializeField] private GameObject shirukenPrefab;
+    [SerializeField] private Transform throwPoint;
+
+    private bool isGrounded;
     private bool isDead = false;
+
+    public int maxShirukens = 3;
+    private int shirukenCount = 0;
+
+    private int facingDirection = 1;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
+        if (isDead) return;
+
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        // Move character left/right
+        // Movement
         rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
 
-        // Flip sprite based on direction
+        // Flip
         if (horizontalInput > 0.01f)
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        else if (horizontalInput < -0.01f)
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        // Jump
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpspeed);
+            sr.flipX = false;
+            facingDirection = 1;
+        }
+        else if (horizontalInput < -0.01f)
+        {
+            sr.flipX = true;
+            facingDirection = -1;
+        }
+
+        // Jump
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpSpeed);
             isGrounded = false;
         }
 
+        // Throw Shuriken
+        if (Input.GetMouseButtonDown(1) && shirukenCount < maxShirukens)
+        {
+            ThrowShiruken();
+        }
+
+        // Animator
         anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);
-        if (Input.GetMouseButtonDown(0) && ! isDead)
-            {
-            anim.SetTrigger("Attack");
-            }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            isDead = true;
-            anim.SetBool("isDead", true);
-        }
     }
 
-    // Detect landing on ground
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
         }
-        
     }
- 
- 
 
-    void OnCollisionExit2D(Collision2D collision)
+    // ======================
+    // SHURIKEN
+    // ======================
+
+    void ThrowShiruken()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
+        GameObject shiruken = Instantiate(
+            shirukenPrefab,
+            throwPoint.position,
+            Quaternion.identity
+        );
+
+        shiruken.GetComponent<Shiruken>().SetDirection(facingDirection);
+
+        shirukenCount++;
+
+        float destroyTime = shiruken.GetComponent<Shiruken>().destroyTime;
+
+        Destroy(shiruken, destroyTime);
+
+        StartCoroutine(ResetShiruken(destroyTime));
     }
-    void OnTriggerEnter2D(Collider2D other)
+
+    IEnumerator ResetShiruken(float delay)
     {
-        if (other.CompareTag("DeadZone"))
-        {
-            anim.SetBool("isDead", true);
-            isDead = true;
-        }
+        yield return new WaitForSeconds(delay);
+        shirukenCount--;
+    }
+
+    // ======================
+    // DEATH
+    // ======================
+
+    void Die()
+    {
+        isDead = true;
+        anim.SetBool("isDead", true);
     }
 }
