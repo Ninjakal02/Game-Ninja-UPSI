@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -11,15 +11,19 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpSpeed = 10f;
 
-    [Header("Shuriken")]
+    [Header("Shiruken")]
     [SerializeField] private GameObject shirukenPrefab;
     [SerializeField] private Transform throwPoint;
 
+    [Header("Shiruken Limit")]
+    public int maxShirukens = 10;
+    private int shirukenCount = 0;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI shirukenText;
+
     private bool isGrounded;
     private bool isDead = false;
-
-    public int maxShirukens = 3;
-    private int shirukenCount = 0;
 
     private int facingDirection = 1;
 
@@ -28,6 +32,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+
+        UpdateShirukenUI();
     }
 
     void Update()
@@ -36,10 +42,12 @@ public class Player : MonoBehaviour
 
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        // Movement
+        // ======================
+        // MOVEMENT
+        // ======================
         rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
 
-        // Flip
+        // Flip character
         if (horizontalInput > 0.01f)
         {
             sr.flipX = false;
@@ -51,20 +59,26 @@ public class Player : MonoBehaviour
             facingDirection = -1;
         }
 
-        // Jump
+        // ======================
+        // JUMP
+        // ======================
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpSpeed);
             isGrounded = false;
         }
 
-        // Throw Shuriken
-        if (Input.GetMouseButtonDown(1) && shirukenCount < maxShirukens)
+        // ======================
+        // THROW SHIRUKEN
+        // ======================
+        if (Input.GetMouseButtonDown(1))
         {
             ThrowShiruken();
         }
 
-        // Animator
+        // ======================
+        // ANIMATION
+        // ======================
         anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);
     }
@@ -78,11 +92,17 @@ public class Player : MonoBehaviour
     }
 
     // ======================
-    // SHURIKEN
+    // SHIRUKEN SYSTEM
     // ======================
 
     void ThrowShiruken()
     {
+        if (shirukenCount >= maxShirukens)
+        {
+            Debug.Log("Shiruken habis!");
+            return;
+        }
+
         GameObject shiruken = Instantiate(
             shirukenPrefab,
             throwPoint.position,
@@ -93,21 +113,19 @@ public class Player : MonoBehaviour
 
         shirukenCount++;
 
-        float destroyTime = shiruken.GetComponent<Shiruken>().destroyTime;
-
-        Destroy(shiruken, destroyTime);
-
-        StartCoroutine(ResetShiruken(destroyTime));
+        UpdateShirukenUI();
     }
 
-    IEnumerator ResetShiruken(float delay)
+    void UpdateShirukenUI()
     {
-        yield return new WaitForSeconds(delay);
-        shirukenCount--;
+        if (shirukenText != null)
+        {
+            shirukenText.text = "Shuriken: " + (maxShirukens - shirukenCount) + " / " + maxShirukens;
+        }
     }
 
     // ======================
-    // DEATH
+    // PLAYER DEATH
     // ======================
 
     void Die()
