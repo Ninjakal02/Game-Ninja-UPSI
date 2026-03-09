@@ -1,5 +1,6 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using System.Collections;
 
 public class DialogueSystem : MonoBehaviour
 {
@@ -12,21 +13,36 @@ public class DialogueSystem : MonoBehaviour
     [HideInInspector]
     public int currentLine = 0;
 
-    // Tambah ni ? max line yang nak dipaparkan
-    public int maxLineToShow = 1; // line 0 & 1
+    public int maxLineToShow = 1;
+
+    // ==== Audio Typing ====
+    public AudioSource typingSound;
+    public float typeSpeed = 0.03f; // masa antara setiap huruf
+
+    private Coroutine typingCoroutine;
 
     void Start()
     {
-        dialogueBox.SetActive(true); // paparkan panel
+        dialogueBox.SetActive(true);
         currentLine = 0;
-        dialogueText.text = lines[currentLine]; // paparkan line 0
+        StartTyping(lines[currentLine]);
     }
 
     void Update()
     {
         if (dialogueBox.activeSelf && Input.GetKeyDown(KeyCode.Z))
         {
-            NextLine();
+            // Jika tengah type, habiskan terus huruf
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+                dialogueText.text = lines[currentLine];
+                typingCoroutine = null;
+            }
+            else
+            {
+                NextLine();
+            }
         }
     }
 
@@ -36,21 +52,48 @@ public class DialogueSystem : MonoBehaviour
         currentLine = startLine;
 
         if (currentLine < lines.Length)
-            dialogueText.text = lines[currentLine];
+            StartTyping(lines[currentLine]);
     }
 
     public void NextLine()
     {
         currentLine++;
 
-        // Stop dialog selepas line 1 sahaja
         if (currentLine <= maxLineToShow && currentLine < lines.Length)
         {
-            dialogueText.text = lines[currentLine];
+            StartTyping(lines[currentLine]);
         }
         else
         {
             dialogueBox.SetActive(false);
         }
+    }
+
+    // ==========================
+    // Typewriter Effect + Audio
+    // ==========================
+    void StartTyping(string line)
+    {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine = StartCoroutine(TypeSentence(line));
+    }
+
+    IEnumerator TypeSentence(string sentence)
+    {
+        dialogueText.text = "";
+
+        foreach (char letter in sentence.ToCharArray())
+        {
+            dialogueText.text += letter;
+
+            if (typingSound != null)
+                typingSound.PlayOneShot(typingSound.clip);
+
+            yield return new WaitForSeconds(typeSpeed);
+        }
+
+        typingCoroutine = null;
     }
 }
