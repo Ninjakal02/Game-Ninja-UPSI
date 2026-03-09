@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -19,8 +19,8 @@ public class Player : MonoBehaviour
     public int maxShirukens = 10;
     private int shirukenCount = 0;
 
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI shirukenText;
+    [Header("Shiruken UI Icons")]
+    [SerializeField] private Image[] shirukenIcons;
 
     private bool isGrounded;
     private bool isDead = false;
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
 
-        UpdateShirukenUI();
+        ResetShirukenIcons();
     }
 
     void Update()
@@ -47,7 +47,6 @@ public class Player : MonoBehaviour
         // ======================
         rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
 
-        // Flip character
         if (horizontalInput > 0.01f)
         {
             sr.flipX = false;
@@ -103,6 +102,9 @@ public class Player : MonoBehaviour
             return;
         }
 
+        // Play throw animation
+        anim.SetTrigger("Throw");
+
         GameObject shiruken = Instantiate(
             shirukenPrefab,
             throwPoint.position,
@@ -111,16 +113,20 @@ public class Player : MonoBehaviour
 
         shiruken.GetComponent<Shiruken>().SetDirection(facingDirection);
 
-        shirukenCount++;
+        // Hide UI icon
+        if (shirukenCount < shirukenIcons.Length)
+        {
+            shirukenIcons[shirukenCount].enabled = false;
+        }
 
-        UpdateShirukenUI();
+        shirukenCount++;
     }
 
-    void UpdateShirukenUI()
+    void ResetShirukenIcons()
     {
-        if (shirukenText != null)
+        for (int i = 0; i < shirukenIcons.Length; i++)
         {
-            shirukenText.text = "Shuriken: " + (maxShirukens - shirukenCount) + " / " + maxShirukens;
+            shirukenIcons[i].enabled = true;
         }
     }
 
