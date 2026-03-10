@@ -40,12 +40,22 @@ public class Shiruken : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+            }
 
-                if (hitEnemyClip != null)
-                    audioSource.PlayOneShot(hitEnemyClip);
+            Destroy(gameObject);
+        }
+
+        if (other.CompareTag("Boss"))
+        {
+            FinalBossHealth boss = other.GetComponent<FinalBossHealth>();
+
+            if (boss != null)
+            {
+                boss.TakeDamage(damage);
             }
 
             Destroy(gameObject);

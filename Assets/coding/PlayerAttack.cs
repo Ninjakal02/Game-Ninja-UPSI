@@ -5,13 +5,14 @@ public class PlayerAttack : MonoBehaviour
     private Animator anim;
     private SpriteRenderer sr;
 
+    [Header("Attack Settings")]
     public Transform attackPoint;
     public float attackRange = 1f;
     public int attackDamage = 20;
-
-    public LayerMask enemyLayer;
-
     public float attackPointDistance = 0.8f;
+
+    [Header("Layers")]
+    public LayerMask enemyLayer; // layer untuk musuh biasa
 
     void Start()
     {
@@ -31,7 +32,7 @@ public class PlayerAttack : MonoBehaviour
             attackPoint.localPosition = new Vector2(attackPointDistance, 0);
         }
 
-        // Attack
+        // Attack dengan left click
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetTrigger("Attack");
@@ -41,19 +42,32 @@ public class PlayerAttack : MonoBehaviour
 
     void Attack()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(
+        // Detect semua collider dalam radius
+        Collider2D[] hitObjects = Physics2D.OverlapCircleAll(
             attackPoint.position,
             attackRange,
             enemyLayer
         );
 
-        foreach (Collider2D enemy in hitEnemies)
+        foreach (Collider2D obj in hitObjects)
         {
-            EnemyHealth eh = enemy.GetComponent<EnemyHealth>();
-
+            // Musuh biasa
+            EnemyHealth eh = obj.GetComponent<EnemyHealth>();
             if (eh != null)
             {
                 eh.TakeDamage(attackDamage);
+                Debug.Log("Hit Enemy: " + obj.name + " Damage: " + attackDamage);
+            }
+
+            // Boss
+            if (obj.CompareTag("Boss"))
+            {
+                FinalBossHealth boss = obj.GetComponent<FinalBossHealth>();
+                if (boss != null)
+                {
+                    boss.TakeDamage(attackDamage);
+                    Debug.Log("Hit Boss: " + obj.name + " Damage: " + attackDamage);
+                }
             }
         }
     }
