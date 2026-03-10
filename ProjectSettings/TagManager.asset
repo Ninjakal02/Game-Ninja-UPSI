@@ -2,18 +2,22 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Ground
+  - DeadZone
+  - Enemy
+  - JumpZone
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Shiruken
+  - Player
+  - Ground
   - 
   - 
   - 
@@ -41,3 +45,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: askar
+    uniqueID: 3148472647
+    locked: 0
+  - name: Player
+    uniqueID: 3675863389
+    locked: 0
+  - name: tilemap
+    uniqueID: 2489736485
+    locked: 0
+  - name: Tilemap
+    uniqueID: 4232229407
+    locked: 0
+  m_RenderingLayers:
+  - Default
