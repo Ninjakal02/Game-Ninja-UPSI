@@ -498,6 +498,7 @@ GameObject:
   - component: {fileID: 647385300}
   - component: {fileID: 647385299}
   - component: {fileID: 647385298}
+  - component: {fileID: 647385301}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -568,7 +569,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 647385299}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 647385301}
+        m_TargetAssemblyTypeName: QuitGame, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &647385299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,6 +620,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647385296}
   m_CullTransparentMesh: 1
+--- !u!114 &647385301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647385296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d95a04050f61a34885b47e2e8a56224, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuitGame
 --- !u!1 &698308897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,6 +1158,7 @@ GameObject:
   - component: {fileID: 1535169317}
   - component: {fileID: 1535169316}
   - component: {fileID: 1535169320}
+  - component: {fileID: 1535169321}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1240,6 +1266,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b324d9578b159b4098c1c8e6293c2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu
+--- !u!114 &1535169321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535169315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d95a04050f61a34885b47e2e8a56224, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuitGame
 --- !u!1 &1736033851
 GameObject:
   m_ObjectHideFlags: 0
