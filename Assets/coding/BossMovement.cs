@@ -16,9 +16,12 @@ public class BossMovement : MonoBehaviour
     public float jumpCooldown = 1f;
 
     [Header("Boss Detection")]
-    public float chaseRange = 8f;     
+    public float chaseRange = 8f;
     public LayerMask groundLayer;
     public LayerMask obstacleLayer;
+
+    [Header("Smoke Effect")]
+    public GameObject smokeEffectPrefab; // letak prefab particle system
 
     private Rigidbody2D rb;
     private Transform player;
@@ -51,7 +54,6 @@ public class BossMovement : MonoBehaviour
 
     void Move()
     {
-        // Tentukan arah
         if (chasing && player != null)
             moveDir = player.position.x > transform.position.x ? 1 : -1;
         else
@@ -64,10 +66,9 @@ public class BossMovement : MonoBehaviour
                 movingRight = true;
         }
 
-        // Movement
         rb.linearVelocity = new Vector2(moveDir * speed, rb.linearVelocity.y);
 
-        // Flip sprite ikut arah
+        // flip sprite ikut arah
         Vector3 scale = transform.localScale;
         scale.x = Mathf.Abs(scale.x) * (moveDir >= 0 ? 1 : -1);
         transform.localScale = scale;
@@ -80,11 +81,9 @@ public class BossMovement : MonoBehaviour
         RaycastHit2D wall = Physics2D.Raycast(frontCheck.position, direction, checkDistance, obstacleLayer);
         RaycastHit2D ground = Physics2D.Raycast(groundCheck.position, Vector2.down, groundDistance, groundLayer);
 
-        // Boss lompat bila ada obstacle & cooldown habis
         if (wall.collider != null && ground.collider != null && Time.time - lastJumpTime >= jumpCooldown)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            lastJumpTime = Time.time;
+            JumpWithSmoke();
         }
     }
 
@@ -96,14 +95,33 @@ public class BossMovement : MonoBehaviour
             player = other.transform;
         }
 
-        //Lompat bila masuk JumpZone
         if (other.CompareTag("JumpZone"))
         {
             if (Time.time - lastJumpTime >= jumpCooldown)
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-                lastJumpTime = Time.time;
+                JumpWithSmoke();
             }
+        }
+    }
+
+    void JumpWithSmoke()
+    {
+        // lompat
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        lastJumpTime = Time.time;
+
+        // spawn smoke effect kat atas boss
+        if (smokeEffectPrefab != null)
+        {
+            Vector3 spawnPos = transform.position + new Vector3(0f, 0.5f, 0f);
+            GameObject smoke = Instantiate(smokeEffectPrefab, spawnPos, Quaternion.identity);
+
+            // pastikan particle system start
+            ParticleSystem ps = smoke.GetComponent<ParticleSystem>();
+            if (ps != null) ps.Play();
+
+            // optional: auto destroy selepas 1-2 saat
+            Destroy(smoke, 2f);
         }
     }
 
@@ -116,7 +134,6 @@ public class BossMovement : MonoBehaviour
         }
     }
 
-    //Reset state selepas respawn
     public void ResetState()
     {
         movingRight = true;
