@@ -2294,7 +2294,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 2.6375, y: 0.46249998, z: 0}
@@ -2941,7 +2941,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 17.785715, y: 10.457143, z: 0}
@@ -3780,6 +3780,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
+  smokeEffectPrefab: {fileID: 3712749356017941145, guid: ab99a8359a59f78458f148cd800e41d1, type: 3}
 --- !u!50 &1852269387
 Rigidbody2D:
   serializedVersion: 5
