@@ -51,6 +51,7 @@ public class BossMovement : MonoBehaviour
 
     void Move()
     {
+        // Tentukan arah
         if (chasing && player != null)
             moveDir = player.position.x > transform.position.x ? 1 : -1;
         else
@@ -63,9 +64,10 @@ public class BossMovement : MonoBehaviour
                 movingRight = true;
         }
 
+        // Movement
         rb.linearVelocity = new Vector2(moveDir * speed, rb.linearVelocity.y);
 
-        // Flip sprite
+        // Flip sprite ikut arah
         Vector3 scale = transform.localScale;
         scale.x = Mathf.Abs(scale.x) * (moveDir >= 0 ? 1 : -1);
         transform.localScale = scale;
@@ -78,10 +80,39 @@ public class BossMovement : MonoBehaviour
         RaycastHit2D wall = Physics2D.Raycast(frontCheck.position, direction, checkDistance, obstacleLayer);
         RaycastHit2D ground = Physics2D.Raycast(groundCheck.position, Vector2.down, groundDistance, groundLayer);
 
+        // Boss lompat bila ada obstacle & cooldown habis
         if (wall.collider != null && ground.collider != null && Time.time - lastJumpTime >= jumpCooldown)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             lastJumpTime = Time.time;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            chasing = true;
+            player = other.transform;
+        }
+
+        // ?? Lompat bila masuk JumpZone
+        if (other.CompareTag("JumpZone"))
+        {
+            if (Time.time - lastJumpTime >= jumpCooldown)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+                lastJumpTime = Time.time;
+            }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            chasing = false;
+            player = null;
         }
     }
 

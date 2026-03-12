@@ -4,21 +4,34 @@ using UnityEngine;
 [RequireComponent(typeof(BossMovement))]
 public class BossRespawn : MonoBehaviour
 {
-    private Vector3 startPosition;
     private FinalBossHealth health;
     private BossMovement movement;
 
+    [Header("Spawn Zone (Required)")]
+    public BoxCollider2D spawnZone; // letak Box Collider 2D untuk zone respawn
+
     void Start()
     {
-        startPosition = transform.position;
+        if (spawnZone == null)
+            Debug.LogWarning("BossRespawn: Spawn Zone belum assign!");
+
         health = GetComponent<FinalBossHealth>();
         movement = GetComponent<BossMovement>();
     }
 
     public void ResetBoss()
     {
-        // Reset posisi
-        transform.position = startPosition;
+        // Respawn dalam spawn zone
+        if (spawnZone != null)
+        {
+            Vector3 newPos = new Vector3(
+                Random.Range(spawnZone.bounds.min.x, spawnZone.bounds.max.x),
+                Random.Range(spawnZone.bounds.min.y, spawnZone.bounds.max.y),
+                transform.position.z
+            );
+
+            transform.position = newPos;
+        }
 
         // Reset HP
         if (health != null)
