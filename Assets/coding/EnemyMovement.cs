@@ -24,6 +24,7 @@ public class EnemyMovement : MonoBehaviour
     private bool chasing = false;
     private Transform player;
     private float lastJumpTime;
+    private float moveDir = 1f;
 
     void Start()
     {
@@ -38,16 +39,10 @@ public class EnemyMovement : MonoBehaviour
 
     void Move()
     {
-        float moveDir = 0f;
-
         if (chasing && player != null)
-        {
-            // Chase player
             moveDir = player.position.x > transform.position.x ? 1 : -1;
-        }
         else
         {
-            // Patrol
             moveDir = movingRight ? 1 : -1;
 
             if (movingRight && transform.position.x >= rightPoint.position.x)
@@ -56,10 +51,9 @@ public class EnemyMovement : MonoBehaviour
                 movingRight = true;
         }
 
-        // Apply movement
         rb.linearVelocity = new Vector2(moveDir * speed, rb.linearVelocity.y);
 
-        // Flip enemy sesuai arah sebenar
+        // Flip sprite
         Vector3 scale = transform.localScale;
         scale.x = Mathf.Abs(scale.x) * (moveDir >= 0 ? 1 : -1);
         transform.localScale = scale;
@@ -67,13 +61,10 @@ public class EnemyMovement : MonoBehaviour
 
     void CheckObstacle()
     {
-        Vector2 direction = movingRight ? Vector2.right : Vector2.left;
+        Vector2 direction = moveDir > 0 ? Vector2.right : Vector2.left;
 
         RaycastHit2D wall = Physics2D.Raycast(frontCheck.position, direction, checkDistance, obstacleLayer);
         RaycastHit2D ground = Physics2D.Raycast(groundCheck.position, Vector2.down, groundDistance, groundLayer);
-
-        Debug.DrawRay(frontCheck.position, direction * checkDistance, Color.red);
-        Debug.DrawRay(groundCheck.position, Vector2.down * groundDistance, Color.blue);
 
         if (wall.collider != null && ground.collider != null && Time.time - lastJumpTime >= jumpCooldown)
         {
@@ -89,12 +80,6 @@ public class EnemyMovement : MonoBehaviour
             chasing = true;
             player = other.transform;
         }
-        if (other.CompareTag("JumpZone"))
-        {
-            // auto jump sekali
-            if (rb != null)
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -103,6 +88,20 @@ public class EnemyMovement : MonoBehaviour
         {
             chasing = false;
             player = null;
+        }
+    }
+
+    // ? Reset state selepas respawn
+    public void ResetState()
+    {
+        movingRight = true;
+        chasing = false;
+        moveDir = 1f;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
         }
     }
 }

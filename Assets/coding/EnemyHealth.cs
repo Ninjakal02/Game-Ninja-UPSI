@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class EnemyHealth : MonoBehaviour
 {
     public int maxHealth = 50;
-    int currentHealth;
+    private int currentHealth;
 
     public Image hpBar;
 
@@ -17,15 +17,20 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-
         UpdateHPBar();
-
-        Debug.Log("Enemy kena damage: " + currentHealth);
+        Debug.Log(name + " kena damage: " + currentHealth);
 
         if (currentHealth <= 0)
         {
             Die();
         }
+    }
+
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        UpdateHPBar();
+        gameObject.SetActive(true);
     }
 
     void UpdateHPBar()
@@ -36,20 +41,7 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Enemy mati");
-
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if (player != null)
-        {
-            PlayerHealth ph = player.GetComponent<PlayerHealth>();
-
-            if (ph != null)
-            {
-                ph.Heal(3);
-            }
-        }
-
-        Destroy(gameObject);
+        Debug.Log(name + " mati!");
+        gameObject.SetActive(false);
     }
 }

@@ -2,12 +2,19 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    public Transform respawnPoint;
+
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            PlayerRespawn player = collision.GetComponent<PlayerRespawn>();
-            player.respawnPoint = transform.position;
+            PlayerRespawn respawn = other.GetComponent<PlayerRespawn>();
+
+            if (respawn != null)
+            {
+                respawn.SetCheckpoint(respawnPoint.position);
+                Debug.Log("Checkpoint Updated!");
+            }
         }
     }
 }

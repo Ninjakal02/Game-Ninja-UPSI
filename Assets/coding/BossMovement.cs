@@ -25,7 +25,6 @@ public class BossMovement : MonoBehaviour
 
     private bool movingRight = true;
     private bool chasing = false;
-
     private float moveDir = 1f;
     private float lastJumpTime;
 
@@ -47,23 +46,15 @@ public class BossMovement : MonoBehaviour
     void CheckChase()
     {
         float distance = Vector2.Distance(transform.position, player.position);
-
-        if (distance <= chaseRange)
-            chasing = true;
-        else
-            chasing = false;
+        chasing = distance <= chaseRange;
     }
 
     void Move()
     {
         if (chasing && player != null)
-        {
-            // Kejar player
             moveDir = player.position.x > transform.position.x ? 1 : -1;
-        }
         else
         {
-            // Patrol kiri kanan
             moveDir = movingRight ? 1 : -1;
 
             if (movingRight && transform.position.x >= rightPoint.position.x)
@@ -72,10 +63,9 @@ public class BossMovement : MonoBehaviour
                 movingRight = true;
         }
 
-        // Movement
         rb.linearVelocity = new Vector2(moveDir * speed, rb.linearVelocity.y);
 
-        // Flip boss ikut arah gerakan
+        // Flip sprite
         Vector3 scale = transform.localScale;
         scale.x = Mathf.Abs(scale.x) * (moveDir >= 0 ? 1 : -1);
         transform.localScale = scale;
@@ -88,13 +78,24 @@ public class BossMovement : MonoBehaviour
         RaycastHit2D wall = Physics2D.Raycast(frontCheck.position, direction, checkDistance, obstacleLayer);
         RaycastHit2D ground = Physics2D.Raycast(groundCheck.position, Vector2.down, groundDistance, groundLayer);
 
-        Debug.DrawRay(frontCheck.position, direction * checkDistance, Color.red);
-        Debug.DrawRay(groundCheck.position, Vector2.down * groundDistance, Color.blue);
-
         if (wall.collider != null && ground.collider != null && Time.time - lastJumpTime >= jumpCooldown)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             lastJumpTime = Time.time;
+        }
+    }
+
+    // ? Reset state selepas respawn
+    public void ResetState()
+    {
+        movingRight = true;
+        chasing = false;
+        moveDir = 1f;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
         }
     }
 

@@ -11,6 +11,7 @@ public class PlayerHealth : MonoBehaviour
 
     private bool isDead = false;
     private Player playerMovement;
+    private PlayerRespawn respawn;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
         UpdateHPBar();
 
         playerMovement = GetComponent<Player>();
+        respawn = GetComponent<PlayerRespawn>();
     }
 
     public void TakeDamage(int damage)
@@ -50,6 +52,7 @@ public class PlayerHealth : MonoBehaviour
 
         Debug.Log("Player heal: " + health);
     }
+
     void UpdateHPBar()
     {
         if (hpBar != null)
@@ -67,8 +70,33 @@ public class PlayerHealth : MonoBehaviour
         if (animator != null)
             animator.SetBool("isDead", true);
 
-        // Stop movement script sahaja
+        // Stop movement
         if (playerMovement != null)
             playerMovement.enabled = false;
+
+        // Respawn selepas 2 saat
+        Invoke("RespawnPlayer", 2f);
+    }
+
+    void RespawnPlayer()
+    {
+        if (respawn != null)
+        {
+            respawn.Respawn();
+        }
+
+        // Reset health
+        health = maxHealth;
+        UpdateHPBar();
+
+        // Reset animation
+        if (animator != null)
+            animator.SetBool("isDead", false);
+
+        // Enable movement balik
+        if (playerMovement != null)
+            playerMovement.enabled = true;
+
+        isDead = false;
     }
 }

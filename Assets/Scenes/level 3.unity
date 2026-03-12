@@ -977,7 +977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287e5bd0188249f4ebe2ef2d1c0157a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  damage: 3
+  damage: 10
   attackCooldown: 1
   enemyAttackClip: {fileID: 0}
 --- !u!61 &736001697
@@ -1397,6 +1397,7 @@ GameObject:
   - component: {fileID: 1034963638}
   - component: {fileID: 1034963637}
   - component: {fileID: 1034963636}
+  - component: {fileID: 1034963644}
   - component: {fileID: 1034963635}
   m_Layer: 7
   m_Name: Player
@@ -1555,8 +1556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6307a27b03ac1468edacb207d59759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  health: 50
-  maxHealth: 50
+  health: 30
+  maxHealth: 30
   hpBar: {fileID: 198298325}
   animator: {fileID: 1034963636}
 --- !u!114 &1034963639
@@ -1733,6 +1734,18 @@ Transform:
   - {fileID: 1289127728}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1034963644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034963634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd78b28e1c5cf54e83df5f37cc3472e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRespawn
 --- !u!1 &1052046726
 GameObject:
   m_ObjectHideFlags: 0
@@ -2259,6 +2272,98 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1211885377
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1211885380}
+  - component: {fileID: 1211885379}
+  - component: {fileID: 1211885378}
+  m_Layer: 0
+  m_Name: Checkpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1211885378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211885377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a44f93c31dc9c74386c40bc81209566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Checkpoint
+  respawnPoint: {fileID: 0}
+--- !u!61 &1211885379
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211885377}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -5.8842072, y: -1.0191506}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.9581213, y: 0.7025497}
+  m_EdgeRadius: 0
+--- !u!4 &1211885380
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211885377}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.80968, y: -0.56792, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1245582528
 GameObject:
   m_ObjectHideFlags: 0
@@ -3358,6 +3463,7 @@ GameObject:
   - component: {fileID: 1852269387}
   - component: {fileID: 1852269386}
   - component: {fileID: 1852269385}
+  - component: {fileID: 1852269392}
   - component: {fileID: 1852269391}
   m_Layer: 3
   m_Name: Boss
@@ -3581,6 +3687,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1852269392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1852269384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af04f3f4fcd0a424f838c0fcf17e5f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossRespawn
 --- !u!1 &1968920761
 GameObject:
   m_ObjectHideFlags: 0
@@ -4207,3 +4325,4 @@ SceneRoots:
   - {fileID: 1435580729}
   - {fileID: 760964506}
   - {fileID: 756560784}
+  - {fileID: 1211885380}

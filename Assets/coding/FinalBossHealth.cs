@@ -3,30 +3,20 @@ using UnityEngine.UI;
 
 public class FinalBossHealth : MonoBehaviour
 {
-    [Header("Boss Health")]
     public int maxHealth = 200;
     private int currentHealth;
 
-    [Header("Boss UI")]
-    public Image bossHPBar;     // HP bar merah
-    public GameObject bossUI;   // Canvas boss HP
+    public Image bossHPBar;
+    public GameObject bossUI;
 
     void Start()
     {
         currentHealth = maxHealth;
 
         if (bossUI != null)
-            bossUI.SetActive(false); // HP bar sembunyi dulu
+            bossUI.SetActive(false);
 
         UpdateHPBar();
-    }
-
-    void UpdateHPBar()
-    {
-        if (bossHPBar != null)
-        {
-            bossHPBar.fillAmount = (float)currentHealth / maxHealth;
-        }
     }
 
     public void TakeDamage(int damage)
@@ -34,10 +24,9 @@ public class FinalBossHealth : MonoBehaviour
         currentHealth -= damage;
 
         if (bossUI != null && !bossUI.activeSelf)
-            bossUI.SetActive(true); // bila kena attack baru keluar HP bar
+            bossUI.SetActive(true);
 
         UpdateHPBar();
-
         Debug.Log("Boss kena damage: " + currentHealth);
 
         if (currentHealth <= 0)
@@ -46,10 +35,26 @@ public class FinalBossHealth : MonoBehaviour
         }
     }
 
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        UpdateHPBar();
+
+        if (bossUI != null)
+            bossUI.SetActive(false);
+
+        gameObject.SetActive(true);
+    }
+
+    void UpdateHPBar()
+    {
+        if (bossHPBar != null)
+            bossHPBar.fillAmount = (float)currentHealth / maxHealth;
+    }
+
     void Die()
     {
         Debug.Log("Boss mati!");
-
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
