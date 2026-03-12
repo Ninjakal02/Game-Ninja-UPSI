@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;
     private bool isDead = false;
 
-    private int facingDirection = 1; // 1 = kanan, -1 = kiri
+    private int facingDirection = 1; 
 
     void Start()
     {
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
 
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        // ===== MOVEMENT =====
+        // MOVEMENT
         rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
 
         if (horizontalInput > 0.01f)
@@ -60,14 +60,14 @@ public class Player : MonoBehaviour
             facingDirection = -1;
         }
 
-        // ===== JUMP =====
+        // JUMP
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpSpeed);
             isGrounded = false;
         }
 
-        // ===== PLAYER ATTACK =====
+        // PLAYER ATTACK 
         if (Input.GetMouseButtonDown(0)) // left click
         {
             anim.SetTrigger("Attack");
@@ -76,13 +76,13 @@ public class Player : MonoBehaviour
                 audioSource.PlayOneShot(attackClip);
         }
 
-        // ===== THROW SHIRUKEN (Right Click) =====
+        //  THROW SHIRUKEN (Right Click)
         if (Input.GetMouseButtonDown(1))
         {
             ThrowShiruken();
         }
 
-        // ===== ANIMATION =====
+        // ANIMATION
         anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);
     }
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
             isGrounded = true;
     }
 
-    // ===== SHIRUKEN SYSTEM =====
+    // SHIRUKEN SYSTEM
     void ThrowShiruken()
     {
         if (shirukenCount >= maxShirukens)
@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
         shirukenCount = 0;
     }
 
-    // ===== PLAYER DEATH =====
+    // PLAYER DEATH
     public void Die()
     {
         isDead = true;

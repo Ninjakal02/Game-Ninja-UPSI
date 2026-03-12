@@ -91,7 +91,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    // ? Reset state selepas respawn
+    //  Reset state selepas respawn
     public void ResetState()
     {
         movingRight = true;

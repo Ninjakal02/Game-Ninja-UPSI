@@ -16,7 +16,7 @@ public class BossMovement : MonoBehaviour
     public float jumpCooldown = 1f;
 
     [Header("Boss Detection")]
-    public float chaseRange = 8f;
+    public float chaseRange = 8f;     
     public LayerMask groundLayer;
     public LayerMask obstacleLayer;
 
@@ -96,7 +96,7 @@ public class BossMovement : MonoBehaviour
             player = other.transform;
         }
 
-        // ?? Lompat bila masuk JumpZone
+        //Lompat bila masuk JumpZone
         if (other.CompareTag("JumpZone"))
         {
             if (Time.time - lastJumpTime >= jumpCooldown)
@@ -116,7 +116,7 @@ public class BossMovement : MonoBehaviour
         }
     }
 
-    // ? Reset state selepas respawn
+    //Reset state selepas respawn
     public void ResetState()
     {
         movingRight = true;
