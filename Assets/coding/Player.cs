@@ -21,14 +21,16 @@ public class Player : MonoBehaviour
     [SerializeField] private Image[] shirukenIcons;
 
     [Header("Audio")]
-    [SerializeField] private AudioClip attackClip;      // Player attack
-    [SerializeField] private AudioClip throwClip;       // Player throw Shiruken
+    [SerializeField] private AudioClip attackClip;
+    [SerializeField] private AudioClip throwClip;
     private AudioSource audioSource;
 
     private bool isGrounded;
     private bool isDead = false;
 
-    private int facingDirection = 1; 
+    public bool canMove = true; // UNTUK FREEZE PLAYER
+
+    private int facingDirection = 1;
 
     void Start()
     {
@@ -44,9 +46,32 @@ public class Player : MonoBehaviour
     {
         if (isDead) return;
 
-        float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalInput = 0;
 
-        // MOVEMENT
+        if (canMove)
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpSpeed);
+                isGrounded = false;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                anim.SetTrigger("Attack");
+
+                if (attackClip != null && audioSource != null)
+                    audioSource.PlayOneShot(attackClip);
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                ThrowShiruken();
+            }
+        }
+
         rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocity.y);
 
         if (horizontalInput > 0.01f)
@@ -60,29 +85,6 @@ public class Player : MonoBehaviour
             facingDirection = -1;
         }
 
-        // JUMP
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpSpeed);
-            isGrounded = false;
-        }
-
-        // PLAYER ATTACK 
-        if (Input.GetMouseButtonDown(0)) // left click
-        {
-            anim.SetTrigger("Attack");
-
-            if (attackClip != null && audioSource != null)
-                audioSource.PlayOneShot(attackClip);
-        }
-
-        //  THROW SHIRUKEN (Right Click)
-        if (Input.GetMouseButtonDown(1))
-        {
-            ThrowShiruken();
-        }
-
-        // ANIMATION
         anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);
     }
@@ -93,7 +95,6 @@ public class Player : MonoBehaviour
             isGrounded = true;
     }
 
-    // SHIRUKEN SYSTEM
     void ThrowShiruken()
     {
         if (shirukenCount >= maxShirukens)
@@ -102,15 +103,14 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // Play throw animation & sound
         anim.SetTrigger("Throw");
+
         if (throwClip != null && audioSource != null)
             audioSource.PlayOneShot(throwClip);
 
         GameObject shiruken = Instantiate(shirukenPrefab, throwPoint.position, Quaternion.identity);
         shiruken.GetComponent<Shiruken>().SetDirection(facingDirection);
 
-        // Update UI
         if (shirukenCount < shirukenIcons.Length)
             shirukenIcons[shirukenCount].enabled = false;
 
@@ -125,7 +125,6 @@ public class Player : MonoBehaviour
         shirukenCount = 0;
     }
 
-    // PLAYER DEATH
     public void Die()
     {
         isDead = true;

@@ -3,13 +3,17 @@ using UnityEngine.UI;
 
 public class FinalBossHealth : MonoBehaviour
 {
+    [Header("Boss Health")]
     public int maxHealth = 200;
     private int currentHealth;
 
+    [Header("Boss UI")]
     public Image bossHPBar;
     public GameObject bossUI;
 
-    public GameObject wall; // dinding yang akan hilang bila boss mati
+    [Header("Environment")]
+    public GameObject wall; // dinding yang menghalang player
+    public CageController cage; // controller untuk buka sangkar ketua bandar
 
     void Start()
     {
@@ -64,6 +68,13 @@ public class FinalBossHealth : MonoBehaviour
             wall.SetActive(false);
         }
 
+        // buka sangkar ketua bandar
+        if (cage != null)
+        {
+            cage.OpenCage();
+        }
+
+        // matikan boss
         gameObject.SetActive(false);
     }
 }
