@@ -9,6 +9,8 @@ public class FinalBossHealth : MonoBehaviour
     public Image bossHPBar;
     public GameObject bossUI;
 
+    public GameObject wall; // dinding yang akan hilang bila boss mati
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -55,6 +57,13 @@ public class FinalBossHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Boss mati!");
+
+        // buka laluan
+        if (wall != null)
+        {
+            wall.SetActive(false);
+        }
+
         gameObject.SetActive(false);
     }
 }
