@@ -17,7 +17,7 @@ public class DialogueSystem : MonoBehaviour
 
     // ==== Audio Typing ====
     public AudioSource typingSound;
-    public float typeSpeed = 0.03f; // masa antara setiap huruf
+    public float typeSpeed = 0.03f;
 
     private Coroutine typingCoroutine;
 
@@ -25,6 +25,10 @@ public class DialogueSystem : MonoBehaviour
     {
         dialogueBox.SetActive(true);
         currentLine = 0;
+
+        // FREEZE SEMUA
+        Time.timeScale = 0f;
+
         StartTyping(lines[currentLine]);
     }
 
@@ -32,7 +36,6 @@ public class DialogueSystem : MonoBehaviour
     {
         if (dialogueBox.activeSelf && Input.GetKeyDown(KeyCode.Z))
         {
-            // Jika tengah type, habiskan terus huruf
             if (typingCoroutine != null)
             {
                 StopCoroutine(typingCoroutine);
@@ -51,6 +54,9 @@ public class DialogueSystem : MonoBehaviour
         dialogueBox.SetActive(true);
         currentLine = startLine;
 
+        // Freeze game
+        Time.timeScale = 0f;
+
         if (currentLine < lines.Length)
             StartTyping(lines[currentLine]);
     }
@@ -65,13 +71,18 @@ public class DialogueSystem : MonoBehaviour
         }
         else
         {
-            dialogueBox.SetActive(false);
+            EndDialogue();
         }
     }
 
-    // ==========================
-    // Typewriter Effect + Audio
-    // ==========================
+    void EndDialogue()
+    {
+        dialogueBox.SetActive(false);
+
+        // GAME BERJALAN BALIK
+        Time.timeScale = 1f;
+    }
+
     void StartTyping(string line)
     {
         if (typingCoroutine != null)
@@ -91,7 +102,7 @@ public class DialogueSystem : MonoBehaviour
             if (typingSound != null)
                 typingSound.PlayOneShot(typingSound.clip);
 
-            yield return new WaitForSeconds(typeSpeed);
+            yield return new WaitForSecondsRealtime(typeSpeed);
         }
 
         typingCoroutine = null;

@@ -11,7 +11,7 @@ public class PlayerRespawn : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        // checkpoint awal = spawn point
+        // spawn awal jadi checkpoint pertama
         checkpointPosition = transform.position;
     }
 
@@ -25,15 +25,17 @@ public class PlayerRespawn : MonoBehaviour
     {
         Debug.Log("Player Respawn");
 
-        // 1?? Respawn Player
+        // reset position
         transform.position = checkpointPosition;
 
+        // reset physics
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
 
+        // reset animation
         if (anim != null)
         {
             anim.Rebind();
@@ -41,14 +43,14 @@ public class PlayerRespawn : MonoBehaviour
             anim.SetBool("isDead", false);
         }
 
-        // 2?? Reset Semua Enemy
-        EnemyRespawn[] enemies = FindObjectsOfType<EnemyRespawn>();
+        // reset semua enemy
+        EnemyRespawn[] enemies = FindObjectsByType<EnemyRespawn>(FindObjectsSortMode.None);
         foreach (EnemyRespawn enemy in enemies)
         {
             enemy.ResetEnemy();
         }
 
-        // 3?? Reset Boss
+        // reset boss
         BossRespawn boss = FindObjectOfType<BossRespawn>();
         if (boss != null)
         {
