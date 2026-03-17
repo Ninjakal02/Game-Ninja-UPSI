@@ -6087,7 +6087,7 @@ MonoBehaviour:
   dialogueBox: {fileID: 937809630}
   dialogueText: {fileID: 552641822}
   lines:
-  - "Hai, welcome to Clan Of Iga games. HANZO = 30 Health and ENEMY = 10 .\nLet's
+  - "Hai, welcome to Samurai Of Iga games. HANZO = 30 Health and ENEMY = 10 .\nLet's
     start with the tutorial first. Press \"Z\" to NEXT\n\n                                                                                                                  "
   - Press "A" to left (<) move and "D" to right (>) move
   - '"Left Click" on your mouse to "Attack". can reduce -2(Enemy Health)'

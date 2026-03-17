@@ -6,13 +6,19 @@ public class PlayerRespawn : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
 
+    public int maxRespawn = 2;
+    private int currentRespawn = 0;
+
+    private GameOverManager gameOverManager;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        // spawn awal jadi checkpoint pertama
         checkpointPosition = transform.position;
+
+        gameOverManager = FindObjectOfType<GameOverManager>();
     }
 
     public void SetCheckpoint(Vector2 newCheckpoint)
@@ -23,19 +29,29 @@ public class PlayerRespawn : MonoBehaviour
 
     public void Respawn()
     {
-        Debug.Log("Player Respawn");
+        currentRespawn++;
 
-        // reset position
+        Debug.Log("Respawn count: " + currentRespawn);
+
+        // kalau lebih 3 kali ? game over
+        if (currentRespawn > maxRespawn)
+        {
+            if (gameOverManager != null)
+                gameOverManager.ShowGameOver();
+
+            gameObject.SetActive(false);
+            return;
+        }
+
+        // Respawn Player
         transform.position = checkpointPosition;
 
-        // reset physics
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
 
-        // reset animation
         if (anim != null)
         {
             anim.Rebind();
@@ -43,7 +59,7 @@ public class PlayerRespawn : MonoBehaviour
             anim.SetBool("isDead", false);
         }
 
-        // reset semua enemy
+        // reset enemy
         EnemyRespawn[] enemies = FindObjectsByType<EnemyRespawn>(FindObjectsSortMode.None);
         foreach (EnemyRespawn enemy in enemies)
         {
